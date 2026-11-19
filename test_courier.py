@@ -1,6 +1,8 @@
+
 import pytest
 import sqlite3
 import database
+import courier
 from courier import Courier
 
 @pytest.fixture
@@ -11,7 +13,10 @@ def setup_db(tmp_path, monkeypatch):
         return sqlite3.connect(str(db_path))
 
     monkeypatch.setattr(database, "connect", test_connect)
+    monkeypatch.setattr(courier, "connect", test_connect)
+
     database.create_tables()
+
     return Courier()
 
 def test_add_customer(setup_db):
